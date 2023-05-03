@@ -8,7 +8,6 @@
         "TestingAssemblyVersion": "0.3.0.0",
         "RepoUrl": "https://github.com/WesBosch/ReBuff",
         "ApplicableVersion": "any",
-        "DalamudApiLevel": 7,
         "IsHide": "False",
         "IsTestingExclusive": "False",
         "DownloadCount": 0,
