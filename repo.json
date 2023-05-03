@@ -1,12 +1,12 @@
 [
     {
-        "Author": "Lichie",
-        "Name": "XIVAuras",
+        "Author": "Lichie, Wisteria",
+        "Name": "ReBuff",
         "Description": "Customizable status and cooldown tracking.",
-        "InternalName": "XIVAuras",
-        "AssemblyVersion": "0.2.4.0",
-        "TestingAssemblyVersion": "0.2.4.0",
-        "RepoUrl": "https://github.com/lichie567/XIVAuras",
+        "InternalName": "ReBuff",
+        "AssemblyVersion": "0.3.0.0",
+        "TestingAssemblyVersion": "0.3.0.0",
+        "RepoUrl": "https://github.com/WesBosch/ReBuff",
         "ApplicableVersion": "any",
         "DalamudApiLevel": 7,
         "IsHide": "False",
@@ -14,9 +14,6 @@
         "DownloadCount": 0,
         "LastUpdate": 0,
         "LoadPriority": 69420,
-        "DownloadLinkInstall": "https://github.com/lichie567/XIVAuras/releases/download/0.2.4.0/XIVAuras.zip",
-        "DownloadLinkTesting": "https://github.com/lichie567/XIVAuras/releases/download/0.2.4.0/XIVAuras.zip",
-        "DownloadLinkUpdate": "https://github.com/lichie567/XIVAuras/releases/download/0.2.4.0/XIVAuras.zip",
         "IconUrl": "https://raw.githubusercontent.com/lichie567/XIVAuras/main/XIVAuras/Media/Images/icon.png"
     }
 ]
