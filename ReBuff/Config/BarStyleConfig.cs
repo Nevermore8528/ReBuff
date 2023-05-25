@@ -52,7 +52,7 @@ namespace ReBuff.Config
         public float SkewY = 0;
 
         public int IconOption = 11;
-        public ushort CustomIcon = 0;
+        public uint CustomIcon = 0;
         public int AutoIcon = 0;
         public bool CropIcon = false;
         public bool Direction = false;
@@ -144,7 +144,7 @@ namespace ReBuff.Config
 
                         if (_iconSearchResults.Any() && ImGui.BeginChild("##IconPicker", new Vector2(size.X - padX * 2, 60), true))
                         {
-                            List<ushort> icons = _iconSearchResults.Select(t => t.Icon).Distinct().ToList();
+                            List<uint> icons = _iconSearchResults.Select(t => t.Icon).Distinct().ToList();
                             for (int i = 0; i < icons.Count; i++)
                             {
                                 Vector2 iconPos = ImGui.GetWindowPos().AddX(10) + new Vector2(i * (40 + padX), padY);
@@ -341,7 +341,7 @@ namespace ReBuff.Config
             ImGui.EndChild();
         }
 
-        private void DrawIconPreview(Vector2 iconPos, Vector2 iconSize, ushort icon, bool crop, bool desaturate, bool text)
+        private void DrawIconPreview(Vector2 iconPos, Vector2 iconSize, uint icon, bool crop, bool desaturate, bool text)
         {
             ImDrawListPtr drawList = ImGui.GetWindowDrawList();
             DrawHelpers.DrawIcon(icon, iconPos, iconSize, crop, 0, desaturate, 1f, drawList);

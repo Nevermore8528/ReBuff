@@ -514,7 +514,7 @@ namespace ReBuff.Widgets
                     {
                         if (style.AutoIcon > 0)
                         {
-                            ushort icon = style.CustomIcon;
+                            uint icon = style.CustomIcon;
 
                             if (icon > 0)
                             {
@@ -523,7 +523,7 @@ namespace ReBuff.Widgets
                         }
                         else if (style.AutoIcon == 0)
                         {
-                            ushort icon = data.Icon;
+                            uint icon = data.Icon;
 
                             if (icon > 0)
                             {

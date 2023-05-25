@@ -26,7 +26,7 @@ namespace ReBuff
     {
         public const string ConfigFileName = "ReBuff.json";
 
-        public static string Version { get; private set; } = "0.3.0.0";
+        public static string Version { get; private set; } = "0.3.0.1";
 
         public static string ConfigFileDir { get; private set; } = "";
 
