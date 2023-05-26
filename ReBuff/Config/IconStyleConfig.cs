@@ -147,6 +147,8 @@ namespace ReBuff.Config
                     if (this.IconOption < 2)
                     {
                         ImGui.Checkbox("Crop Icon", ref this.CropIcon);
+                        ImGui.SameLine();
+                        ImGui.Checkbox("Desaturate Icon", ref this.DesaturateIcon);
                     }
                     else if (this.IconOption == 3)
                     {

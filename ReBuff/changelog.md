@@ -1,3 +1,7 @@
+# Version 0.3.0.2
+- Update for 6.4
+- Fix desaturated icon toggle
+
 # Version 0.3.0.0
 - Project taken over and premise reworked in preperation for main repo approval.
 - Dynamic Bars added; includes rounded, vertical and multicolor variants.
