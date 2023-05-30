@@ -3,7 +3,7 @@
         "Author": "Lichie, Wisteria",
         "Name": "ReBuff",
         "Description": "Customizable status and cooldown tracking.",
-        "InternalName": "ReBuff",
+        "InternalName": "XIVAuras",
         "AssemblyVersion": "0.3.0.4",
         "TestingAssemblyVersion": "0.3.0.4",
         "RepoUrl": "https://github.com/WesBosch/ReBuff",
