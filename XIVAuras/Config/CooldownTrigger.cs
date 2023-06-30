@@ -46,6 +46,8 @@ namespace XIVAuras.Config
         public bool LosCheck;
         public int LosValue;
 
+        public bool DutyAction;
+
         public override TriggerType Type => TriggerType.Cooldown;
         public override TriggerSource Source => TriggerSource.Player;
 
@@ -54,6 +56,8 @@ namespace XIVAuras.Config
             data = new DataSource();
             if (preview)
             {
+                data.DutyAction1 = data.GetDutyActionData(0);
+                data.DutyAction2 = data.GetDutyActionData(1);
                 data.Value = 10;
                 data.Stacks = 2;
                 data.MaxStacks = 2;
@@ -87,6 +91,10 @@ namespace XIVAuras.Config
             bool usable = false;
             bool inRange = false;
             bool inLos = false;
+            bool isDutyAction = false;
+
+            data.DutyAction1 = data.GetDutyActionData(0);
+            data.DutyAction2 = data.GetDutyActionData(1);
 
             if (this.Usable)
             {
@@ -101,6 +109,12 @@ namespace XIVAuras.Config
             if (this.LosCheck)
             {
                 inLos = helper.IsTargetInLos(Singletons.Get<ClientState>().LocalPlayer, Utils.FindTarget());
+            }
+
+            if (this.DutyAction)
+            {
+                if (actionId == data.DutyAction1 || actionId == data.DutyAction2)
+                    isDutyAction = true;
             }
 
             if (this.Combo && actionTrigger.ComboId.Length > 0)
@@ -128,6 +142,7 @@ namespace XIVAuras.Config
                 (!this.Usable || (this.UsableValue == 0 ? usable : !usable)) &&
                 (!this.RangeCheck || (this.RangeValue == 0 ? inRange : !inRange)) &&
                 (!this.LosCheck || (this.LosValue == 0 ? inLos : !inLos)) &&
+                (!this.DutyAction || isDutyAction) &&
                 (!this.Cooldown || Utils.GetResult(data.Value, this.CooldownOp, this.CooldownValue)) &&
                 (!this.ChargeCount || Utils.GetResult(data.Stacks, this.ChargeCountOp, this.ChargeCountValue));
         }
@@ -283,6 +298,18 @@ namespace XIVAuras.Config
                 ImGui.PushItemWidth(optionsWidth);
                 ImGui.Combo("##LosCombo", ref this.LosValue, _losOptions, _losOptions.Length);
                 ImGui.PopItemWidth();
+            }
+
+            DrawHelpers.DrawNestIndicator(1);
+            ImGui.Checkbox("Is Active Lost Action", ref this.DutyAction);
+            if (this.DutyAction)
+            {
+                //ImGui.SameLine();
+                //padWidth = ImGui.CalcItemWidth() - ImGui.GetCursorPosX() - optionsWidth + padX;
+                //ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padWidth);
+                //ImGui.PushItemWidth(optionsWidth);
+                //ImGui.Combo("##DutyCombo", ref this.DutyValue, _dutyOptions, _dutyOptions.Length);
+                //ImGui.PopItemWidth();
             }
         }
 

@@ -23,7 +23,7 @@ namespace XIVAuras.Config
         public bool ShowBorder = true;
         public int BorderThickness = 1;
         public ConfigColor BorderColor = new ConfigColor(0, 0, 0, 1);
-        public bool ShowProgressSwipe = true;
+        public bool ShowProgressSwipe = false;
         public float ProgressSwipeOpacity = 0.6f;
         public bool InvertSwipe = false;
         public bool ShowSwipeLines = false;
@@ -81,8 +81,8 @@ namespace XIVAuras.Config
                 ImGui.RadioButton("No Icon", ref this.IconOption, 2);
                 ImGui.SameLine();
                 ImGui.RadioButton("Solid Color", ref this.IconOption, 3);
-                ImGui.SameLine();
-                ImGui.RadioButton("Indicator", ref this.IconOption, 6);
+                //ImGui.SameLine();
+                //ImGui.RadioButton("Indicator", ref this.IconOption, 6);
 
                 if (this.IconOption == 1)
                 {

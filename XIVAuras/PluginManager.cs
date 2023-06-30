@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Numerics;
 using Dalamud.Game.ClientState;
+using Dalamud.Game.ClientState.JobGauge;
 using Dalamud.Game.Command;
 using Dalamud.Interface;
 using Dalamud.Interface.Windowing;
+using Dalamud.IoC;
 using Dalamud.Plugin;
 using ImGuiNET;
 using XIVAuras.Auras;
@@ -26,6 +28,7 @@ namespace XIVAuras
         private ConfigWindow ConfigRoot { get; init; }
 
         private XIVAurasConfig Config { get; init; }
+        public static JobGauges JobGauges { get; private set; } = null!;
 
         private readonly Vector2 _configSize = new Vector2(600, 650);
 
@@ -42,12 +45,14 @@ namespace XIVAuras
             ClientState clientState,
             CommandManager commandManager,
             DalamudPluginInterface pluginInterface,
-            XIVAurasConfig config)
+            XIVAurasConfig config,
+            JobGauges jobGauges)
         {
             this.ClientState = clientState;
             this.CommandManager = commandManager;
             this.PluginInterface = pluginInterface;
             this.Config = config;
+            JobGauges = jobGauges;
 
             this.ConfigRoot = new ConfigWindow("ConfigRoot", ImGui.GetMainViewport().Size / 2, _configSize);
             this.WindowSystem = new WindowSystem("ReBuff");

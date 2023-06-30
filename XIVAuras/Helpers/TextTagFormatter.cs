@@ -52,6 +52,7 @@ namespace XIVAuras.Helpers
                     value = m.Groups[2].Value switch
                     {
                         ":k" => KiloFormat(f, _format, decimals, _rounding) ?? m.Value,
+                        ":s" => ShortFormat(f, _format, decimals, _rounding) ?? m.Value,
                         ":t" => TimeFormat(f, _rounding),
                         _    => FloatFormat(f, _format, decimals, _rounding)
                     };
@@ -97,6 +98,11 @@ namespace XIVAuras.Helpers
         {
             >= 1000000 => FloatFormat(num / 1000000f, format, decimals, rounding) + "M",
             >= 1000 => FloatFormat(num / 1000f, format, decimals, rounding) + "K",
+            _ => FloatFormat(num, format, decimals, rounding)
+        };
+        private static string ShortFormat(float num, string format, int decimals, int rounding) => num switch
+        {
+            >= 1000 => FloatFormat(num / 1000f, format, decimals, rounding),
             _ => FloatFormat(num, format, decimals, rounding)
         };
     }

@@ -6,7 +6,9 @@ using System.Runtime.InteropServices;
 using Dalamud.Data;
 using Dalamud.Game;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Utility.Signatures;
 using FFXIVClientStructs.FFXIV.Client.Game;
+using FFXIVClientStructs.Interop.Attributes;
 using Lumina.Excel;
 using Lumina.Excel.GeneratedSheets;
 
@@ -16,6 +18,20 @@ namespace XIVAuras.Helpers
 {
     public class ActionHelpers
     {
+        private delegate uint GetDutyActionIdDelegate(ushort dutyActionSlot);
+
+        [Signature("E8 ?? ?? ?? ?? EB 17 33 C9")]
+        private GetDutyActionIdDelegate? GetDutyActionId;
+
+        public uint? GetDutyAction(ushort a)
+        {
+            SignatureHelper.Initialise(this);
+
+            var dutyAction = GetDutyActionId?.Invoke(a);
+
+            return dutyAction;
+        }
+
         private const string CastRaySig = "48 83 EC 48 48 8B 05 ?? ?? ?? ?? 4D 8B D1";
         private const string ComboSig = "F3 0F 11 05 ?? ?? ?? ?? 48 83 C7 08";
 
@@ -223,6 +239,7 @@ namespace XIVAuras.Helpers
                 actionList.AddRange(FindEntriesFromActionSheet(input));
                 actionList.AddRange(FindEntriesFromActionIndirectionSheet(input));
                 actionList.AddRange(FindEntriesFromGeneralActionSheet(input));
+                actionList.AddRange(FindEntriesFromLostActionSheet(input));
             }
 
             return actionList;
@@ -325,6 +342,32 @@ namespace XIVAuras.Helpers
                     if (action is not null && input.ToLower().Equals(generalAction.Name.ToString().ToLower()))
                     {
                         actionList.Add(new TriggerData(generalAction.Name, action.RowId, (ushort)generalAction.Icon, action.MaxCharges));
+                    }
+                }
+            }
+
+            return actionList;
+        }
+
+        public static List<TriggerData> FindEntriesFromLostActionSheet(string input)
+        {
+            List<TriggerData> actionList = new List<TriggerData>();
+            ExcelSheet<MYCTemporaryItem>? lostSheet = Singletons.Get<DataManager>().GetExcelSheet<MYCTemporaryItem>();
+
+            if (lostSheet is null)
+            {
+                return actionList;
+            }
+
+            // Add by name (Add by id doesn't really work, these sheets are a mess)
+            if (!actionList.Any())
+            {
+                foreach (MYCTemporaryItem lostAction in lostSheet)
+                {
+                    LuminaAction? action = lostAction.Action.Value;
+                    if (action is not null && input.ToLower().Equals(action.Name.ToString().ToLower()))
+                    {
+                        actionList.Add(new TriggerData(action.Name, action.RowId, (ushort)action.Icon, action.MaxCharges));
                     }
                 }
             }

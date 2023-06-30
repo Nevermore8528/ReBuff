@@ -47,7 +47,8 @@ namespace XIVAuras.Helpers
         CP,
         GP,
         Level,
-        Distance
+        Distance,
+        Gauge
     }
 
     public enum TriggerDataOp

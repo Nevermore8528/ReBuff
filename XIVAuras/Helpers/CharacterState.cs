@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.Gui;
 using FFXIVClientStructs.FFXIV.Client.Game.Character;
+using FFXIVClientStructs.FFXIV.Client.Game.Gauge;
 using FFXIVClientStructs.FFXIV.Component.GUI;
+using Dalamud.Game.ClientState.JobGauge;
 
 namespace XIVAuras.Helpers
 {

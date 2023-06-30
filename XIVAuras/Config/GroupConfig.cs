@@ -39,7 +39,7 @@ namespace XIVAuras.Config
                 ImGui.Checkbox("Recursive##Size", ref _recusiveResize);
                 if (ImGui.IsItemHovered())
                 {
-                    ImGui.SetTooltip("Check to recursively resize icons in sub-groups");
+                    ImGui.SetTooltip("Check to recursively resize icons in sub-groups, doesn't work correctly on bars");
                 }
 
                 ImGui.SameLine();
@@ -62,7 +62,6 @@ namespace XIVAuras.Config
 
                 ImGui.NewLine();
                 ImGui.Text("Sort Icons");
-                ImGui.BulletText("This will remove some customization from mixed bar/icon elements. Make backups.");
                 ImGui.DragFloat2("Spacing##Sort", ref _iconPos, 1, -100, 100);
                 ImGui.Checkbox("Recursive##Sort", ref _recusiveSort);
                 if (ImGui.IsItemHovered())

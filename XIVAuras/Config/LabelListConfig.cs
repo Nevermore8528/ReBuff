@@ -166,7 +166,7 @@ namespace XIVAuras.Config
             }
             else
             {
-                DrawHelpers.DrawNotification("Failed to Import Aura!", NotificationType.Error);
+                DrawHelpers.DrawNotification("Failed to Import Widget!", NotificationType.Error);
             }
 
             _labelInput = string.Empty;

@@ -55,10 +55,10 @@ namespace XIVAuras.Config
                 ImGui.Combo("##Type", ref Unsafe.As<AuraType, int>(ref _selectedType), _options, _options.Length);
 
                 ImGui.SameLine();
-                DrawHelpers.DrawButton(string.Empty, FontAwesomeIcon.Plus, () => CreateAura(_selectedType, _input), "Create new Aura or Group", buttonSize);
+                DrawHelpers.DrawButton(string.Empty, FontAwesomeIcon.Plus, () => CreateAura(_selectedType, _input), "Create new Widget or Group", buttonSize);
 
                 ImGui.SameLine();
-                DrawHelpers.DrawButton(string.Empty, FontAwesomeIcon.Download, () => ImportAura(), "Import new Aura or Group from Clipboard", buttonSize);
+                DrawHelpers.DrawButton(string.Empty, FontAwesomeIcon.Download, () => ImportAura(), "Import new Widget or Group from Clipboard", buttonSize);
                 ImGui.PopItemWidth();
 
                 ImGui.EndChild();
@@ -219,7 +219,7 @@ namespace XIVAuras.Config
             }
             else
             {
-                DrawHelpers.DrawNotification("Failed to Import Aura!", NotificationType.Error);
+                DrawHelpers.DrawNotification("Failed to Import Widget!", NotificationType.Error);
             }
 
             _input = string.Empty;

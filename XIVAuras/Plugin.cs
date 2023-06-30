@@ -93,7 +93,7 @@ namespace XIVAuras
             Singletons.Register(new FontsManager(pluginInterface.UiBuilder, config.FontConfig.Fonts.Values));
 
             // Start the plugin
-            Singletons.Register(new PluginManager(clientState, commandManager, pluginInterface, config));
+            Singletons.Register(new PluginManager(clientState, commandManager, pluginInterface, config, jobGauges));
         }
 
         private static TextureWrap? LoadIconTexture(UiBuilder uiBuilder)

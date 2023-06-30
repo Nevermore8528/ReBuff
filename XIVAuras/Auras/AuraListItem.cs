@@ -71,7 +71,9 @@ namespace XIVAuras.Auras
                     Mp = data.Mp,
                     Cp = data.Cp,
                     Gp = data.Gp,
-                    Icon = data.Icon
+                    Icon = data.Icon,
+                    Gauge = data.Gauge,
+                    MaxGauge = data.MaxGauge
                 };
             }
 
