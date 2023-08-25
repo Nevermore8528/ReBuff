@@ -460,17 +460,18 @@ namespace XIVAuras.Config
                         this.MaxUnit = 100;
                         break;
                     case 1602:
-                        if (data.NextStepID != 15999 && data.NextStepID != 16000 &&
-                            data.NextStepID != 16001 && data.NextStepID != 16002)
+                        if ((data.NextStepID != 15999 && data.NextStepID != 16000 &&
+                            data.NextStepID != 16001 && data.NextStepID != 16002) ||
+                            data.CompletedSteps == 4)
                         { this.Unit = 0; data.NextStep = ""; }
-                        else if (data.NextStepID == 15999)
-                        { this.Unit = 1; data.NextStep = "Emboite"; }
-                        else if (data.NextStepID == 16000)
-                        { this.Unit = 2; data.NextStep = "Entrechat"; }
-                        else if (data.NextStepID == 16001)
-                        { this.Unit = 3; data.NextStep = "Jete"; }
-                        else if (data.NextStepID == 16002)
-                        { this.Unit = 4; data.NextStep = "Pirouette"; }
+                        else if (data.NextStepID == 15999 && data.CompletedSteps < 4)
+                        { this.Unit = 1; data.NextStep = "Emboite"; data.Icon = 3455; }
+                        else if (data.NextStepID == 16000 && data.CompletedSteps < 4)
+                        { this.Unit = 2; data.NextStep = "Entrechat"; data.Icon = 3456; }
+                        else if (data.NextStepID == 16001 && data.CompletedSteps < 4)
+                        { this.Unit = 3; data.NextStep = "Jete"; data.Icon = 3457; }
+                        else if (data.NextStepID == 16002 && data.CompletedSteps < 4)
+                        { this.Unit = 4; data.NextStep = "Pirouette"; data.Icon = 3458; }
                         this.MaxUnit = 4;
                         break;
                     case 1603:
@@ -478,13 +479,13 @@ namespace XIVAuras.Config
                             data.Steps[0] != 16001 && data.Steps[0] != 16002)
                         { this.Unit = 0; data.Step1 = ""; }
                         else if (data.Steps[0] == 15999)
-                        { this.Unit = 1; data.Step1 = "Emboite"; }
+                        { this.Unit = 1; data.Step1 = "Emboite"; data.Icon = 3455; }
                         else if (data.Steps[0] == 16000)
-                        { this.Unit = 2; data.Step1 = "Entrechat"; }
+                        { this.Unit = 2; data.Step1 = "Entrechat"; data.Icon = 3456; }
                         else if (data.Steps[0] == 16001)
-                        { this.Unit = 3; data.Step1 = "Jete"; }
+                        { this.Unit = 3; data.Step1 = "Jete"; data.Icon = 3457; }
                         else if (data.Steps[0] == 16002)
-                        { this.Unit = 4; data.Step1 = "Pirouette"; }
+                        { this.Unit = 4; data.Step1 = "Pirouette"; data.Icon = 3458; }
                         this.MaxUnit = 4;
                         break;
                     case 1604:
@@ -492,13 +493,13 @@ namespace XIVAuras.Config
                             data.Steps[1] != 16001 && data.Steps[1] != 16002)
                         { this.Unit = 0; data.Step2 = ""; }
                         else if (data.Steps[1] == 15999)
-                        { this.Unit = 1; data.Step2 = "Emboite"; }
+                        { this.Unit = 1; data.Step2 = "Emboite"; data.Icon = 3455; }
                         else if (data.Steps[1] == 16000)
-                        { this.Unit = 2; data.Step2 = "Entrechat"; }
+                        { this.Unit = 2; data.Step2 = "Entrechat"; data.Icon = 3456; }
                         else if (data.Steps[1] == 16001)
-                        { this.Unit = 3; data.Step2 = "Jete"; }
+                        { this.Unit = 3; data.Step2 = "Jete"; data.Icon = 3457; }
                         else if (data.Steps[1] == 16002)
-                        { this.Unit = 4; data.Step2 = "Pirouette"; }
+                        { this.Unit = 4; data.Step2 = "Pirouette"; data.Icon = 3458; }
                         this.MaxUnit = 4;
                         break;
                     case 1605:
@@ -506,13 +507,13 @@ namespace XIVAuras.Config
                             data.Steps[2] != 16001 && data.Steps[2] != 16002)
                         { this.Unit = 0; data.Step3 = ""; }
                         else if (data.Steps[2] == 15999)
-                        { this.Unit = 1; data.Step3 = "Emboite"; }
+                        { this.Unit = 1; data.Step3 = "Emboite"; data.Icon = 3455; }
                         else if (data.Steps[2] == 16000)
-                        { this.Unit = 2; data.Step3 = "Entrechat"; }
+                        { this.Unit = 2; data.Step3 = "Entrechat"; data.Icon = 3456; }
                         else if (data.Steps[2] == 16001)
-                        { this.Unit = 3; data.Step3 = "Jete"; }
+                        { this.Unit = 3; data.Step3 = "Jete"; data.Icon = 3457; }
                         else if (data.Steps[2] == 16002)
-                        { this.Unit = 4; data.Step3 = "Pirouette"; }
+                        { this.Unit = 4; data.Step3 = "Pirouette"; data.Icon = 3458; }
                         this.MaxUnit = 4;
                         break;
                     case 1606:
@@ -520,14 +521,17 @@ namespace XIVAuras.Config
                             data.Steps[3] != 16001 && data.Steps[3] != 16002)
                         { this.Unit = 0; data.Step4 = ""; }
                         else if (data.Steps[3] == 15999)
-                        { this.Unit = 1; data.Step4 = "Emboite"; }
+                        { this.Unit = 1; data.Step4 = "Emboite"; data.Icon = 3455; }
                         else if (data.Steps[3] == 16000)
-                        { this.Unit = 2; data.Step4 = "Entrechat"; }
+                        { this.Unit = 2; data.Step4 = "Entrechat"; data.Icon = 3456; }
                         else if (data.Steps[3] == 16001)
-                        { this.Unit = 3; data.Step4 = "Jete"; }
+                        { this.Unit = 3; data.Step4 = "Jete"; data.Icon = 3457; }
                         else if (data.Steps[3] == 16002)
-                        { this.Unit = 4; data.Step4 = "Pirouette"; }
+                        { this.Unit = 4; data.Step4 = "Pirouette"; data.Icon = 3458; }
                         this.MaxUnit = 4;
+                        break;
+                    case 1607:
+                        this.Unit = data.CompletedSteps;
                         break;
                     // MCH
                     case 1700:
@@ -718,7 +722,7 @@ namespace XIVAuras.Config
             ImGui.Combo("Trigger Source", ref Unsafe.As<TriggerSource, int>(ref this.TriggerSource), _sourceOptions, _sourceOptions.Length);
             DrawHelpers.DrawSpacing(1);
             
-            ImGui.Text("Trigger Conditions");
+            ImGui.TextUnformatted("Trigger Conditions");
             string[] operatorOptions = TriggerOptions.OperatorOptions;
             float optionsWidth = 100 + padX;
             float opComboWidth = 55;
@@ -969,7 +973,7 @@ namespace XIVAuras.Config
                     ImGui.SameLine();
                     ImGui.RadioButton("3rd Seal", ref this.UnitOption, 602);
 
-                    ImGui.Text("Card Info: 1 = Solar, 2 = Lunar, 3 = Celestial");
+                    ImGui.TextUnformatted("Card Info: 1 = Solar, 2 = Lunar, 3 = Celestial");
                 }
 
                 if (this.JobValue == 7) // SCH
@@ -1077,7 +1081,7 @@ namespace XIVAuras.Config
                     ImGui.SameLine();
                     ImGui.RadioButton("Coda 3", ref this.UnitOption, 1506);
 
-                    ImGui.Text("Song Info: 1 = Wanderer, 2 = Mage, 3 = Army");
+                    ImGui.TextUnformatted("Song Info: 1 = Wanderer, 2 = Mage, 3 = Army");
                 }
                 if (this.JobValue == 16) // DNC
                 {
@@ -1085,9 +1089,11 @@ namespace XIVAuras.Config
                     ImGui.SameLine();
                     ImGui.RadioButton("Esprit", ref this.UnitOption, 1601);
                     ImGui.SameLine();
+                    ImGui.RadioButton("Completed Steps", ref this.UnitOption, 1607);
+                    ImGui.SameLine();
                     ImGui.RadioButton("Next Step", ref this.UnitOption, 1602);
 
-                    ImGui.Text("Completed Steps:");
+                    ImGui.TextUnformatted("Steps:");
                     ImGui.RadioButton("1st", ref this.UnitOption, 1603);
                     ImGui.SameLine();
                     ImGui.RadioButton("2nd", ref this.UnitOption, 1604);
@@ -1096,7 +1102,7 @@ namespace XIVAuras.Config
                     ImGui.SameLine();
                     ImGui.RadioButton("4th", ref this.UnitOption, 1606);
 
-                    ImGui.Text("Step Info: 1 = Emboite, 2 = Entrechat, 3 = Jete, 4 = Pirouette");
+                    ImGui.TextUnformatted("Step Info: 1 = Emboite, 2 = Entrechat, 3 = Jete, 4 = Pirouette");
                 }
                 if (this.JobValue == 17) // MCH
                 {
@@ -1137,9 +1143,9 @@ namespace XIVAuras.Config
                     ImGui.SameLine();
                     ImGui.RadioButton("Beast Chakra 3", ref this.UnitOption, 2004);
 
-                    ImGui.Text("Nadi Info: 1 = Solar, 2 = Lunar");
+                    ImGui.TextUnformatted("Nadi Info: 1 = Solar, 2 = Lunar");
 
-                    ImGui.Text("Chakra Info: 1 = Coeurl, 2 = Opo-opo, 3 = Raptor");
+                    ImGui.TextUnformatted("Chakra Info: 1 = Coeurl, 2 = Opo-opo, 3 = Raptor");
                 }
                 if (this.JobValue == 21) // NIN
                 {
@@ -1171,7 +1177,7 @@ namespace XIVAuras.Config
                     ImGui.SameLine();
                     ImGui.RadioButton("Has Ka", ref this.UnitOption, 2304);
                 }
-                ImGui.Text($"Current Gauge value: {this.Unit}");
+                ImGui.TextUnformatted($"Current Gauge value: {this.Unit}");
                 ImGui.SameLine();
                 padWidth = ImGui.CalcItemWidth() - ImGui.GetCursorPosX() - optionsWidth + padX;
                 ImGui.SetCursorPosX(ImGui.GetCursorPosX() + padWidth);

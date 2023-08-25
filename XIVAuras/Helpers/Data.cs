@@ -80,6 +80,7 @@ namespace XIVAuras.Helpers
             "[maxgp]",
             "[cp]",
             "[maxcp]",
+            "[gauge]",
         };
 
         public string GetFormattedString(string format, string numberFormat, int rounding)
@@ -113,6 +114,7 @@ namespace XIVAuras.Helpers
             TriggerDataSource.GP => this.Gp,
             TriggerDataSource.Level => this.Level,
             TriggerDataSource.Distance => this.Distance,
+            TriggerDataSource.Gauge => this.Gauge,
             _ => 0
         };
 
@@ -221,6 +223,7 @@ namespace XIVAuras.Helpers
         public uint[] Steps = PluginManager.JobGauges.Get<DNCGauge>().Steps;
         //if (data.Steps[array] == DanceStep.Step) { //Do Something; }
         public uint NextStepID = PluginManager.JobGauges.Get<DNCGauge>().NextStep;
+        public int CompletedSteps = PluginManager.JobGauges.Get<DNCGauge>().CompletedSteps;
         public string? Step1;
         public string? Step2;
         public string? Step3;

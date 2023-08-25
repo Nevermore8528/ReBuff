@@ -106,13 +106,13 @@ namespace XIVAuras.Config
                     if (ImGui.TableSetColumnIndex(0))
                     {
                         ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                        ImGui.Text(aura.Name);
+                        ImGui.TextUnformatted(aura.Name);
                     }
 
                     if (ImGui.TableSetColumnIndex(1))
                     {
                         ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                        ImGui.Text(aura.Type.ToString());
+                        ImGui.TextUnformatted(aura.Type.ToString());
                     }
 
                     if (ImGui.TableSetColumnIndex(2))

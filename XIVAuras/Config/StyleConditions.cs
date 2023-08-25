@@ -134,7 +134,7 @@ namespace XIVAuras.Config
 
         public void DrawConfig(IConfigurable parent, Vector2 size, float padX, float padY)
         {
-            ImGui.Text(_text);
+            ImGui.TextUnformatted(_text);
             size = size.AddY(-(_yOffset + padY));
             if (ImGui.BeginChild("##StyleConditions", new Vector2(size.X, size.Y), true))
             {
@@ -202,12 +202,12 @@ namespace XIVAuras.Config
                 if (i == 0)
                 {
                     ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                    ImGui.Text("IF");
+                    ImGui.TextUnformatted("IF");
                 }
                 else
                 {
                     ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                    ImGui.Text("ELSE IF");
+                    ImGui.TextUnformatted("ELSE IF");
                 }
             }
 

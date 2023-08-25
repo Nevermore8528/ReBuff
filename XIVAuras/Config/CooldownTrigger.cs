@@ -178,7 +178,7 @@ namespace XIVAuras.Config
             }
 
             DrawHelpers.DrawSpacing(1);
-            ImGui.Text("Trigger Conditions");
+            ImGui.TextUnformatted("Trigger Conditions");
             string[] operatorOptions = TriggerOptions.OperatorOptions;
             float optionsWidth = 100 + padX;
             float opComboWidth = 55;

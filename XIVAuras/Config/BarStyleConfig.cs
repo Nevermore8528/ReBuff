@@ -664,7 +664,7 @@ namespace XIVAuras.Config
                         ImGui.SameLine();
                         ImGui.RadioButton("Next Step", ref this.UnitOption, 1602);
 
-                        ImGui.Text("Completed Steps:");
+                        ImGui.TextUnformatted("Completed Steps:");
                         ImGui.RadioButton("1st", ref this.UnitOption, 1603);
                         ImGui.SameLine();
                         ImGui.RadioButton("2nd", ref this.UnitOption, 1604);
@@ -745,7 +745,7 @@ namespace XIVAuras.Config
                         ImGui.RadioButton("Has Ka", ref this.UnitOption, 2304);
 
                         /* This doesnt appear to actually be on the job gauge, might discard
-                        ImGui.Text("Active Kaeshi");
+                        ImGui.TextUnformatted("Active Kaeshi");
                         ImGui.SameLine();
                         ImGui.RadioButton("None", ref this.UnitOption, 2305);
                         ImGui.SameLine();

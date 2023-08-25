@@ -35,12 +35,12 @@ namespace XIVAuras.Config
 
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + headerSize.Y);
                 DrawHelpers.DrawSpacing(1);
-                ImGui.Text("Changelog");
+                ImGui.TextUnformatted("Changelog");
                 Vector2 changeLogSize = new Vector2(size.X - padX * 2, size.Y - ImGui.GetCursorPosY() - padY - 30);
 
                 if (ImGui.BeginChild("##Changelog", changeLogSize, true))
                 {
-                    ImGui.Text(Plugin.Changelog);
+                    ImGui.TextUnformatted(Plugin.Changelog);
                     ImGui.EndChild();
                 }
                 

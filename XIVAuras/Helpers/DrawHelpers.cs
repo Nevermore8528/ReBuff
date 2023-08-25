@@ -19,7 +19,7 @@ namespace XIVAuras.Helpers
         {
             if (!string.IsNullOrEmpty(label))
             {
-                ImGui.Text(label);
+                ImGui.TextUnformatted(label);
                 ImGui.SameLine();
             }
 
@@ -215,7 +215,58 @@ namespace XIVAuras.Helpers
             // text
             drawList.AddText(new Vector2(pos.X, pos.Y), color, text);
         }
-        
+
+        public static void DrawTooltip(
+            ImDrawListPtr drawList,
+            string text,
+            Vector2 pos,
+            Vector2 size,
+            Vector2 offset,
+            Vector2 textsize,
+            Vector2 hoverbuffer,
+            Vector2 buffer,
+            uint color,
+            bool showBG,
+            uint BGColor,
+            bool isPreview,
+            bool outline,
+            uint outlineColor = 0xFF000000,
+            int thickness = 1
+            )
+        {
+            if (ImGui.IsMouseHoveringRect(pos - hoverbuffer, pos + size + hoverbuffer) || isPreview)
+            {
+                Vector2 mousebuffer = new Vector2(24, 0);
+                pos = ImGui.GetMousePos() + mousebuffer + offset;
+                // Tooltip Background
+                if (showBG)
+                {
+                    drawList.AddRectFilled(pos - buffer, pos + textsize + buffer*3, BGColor);
+                }
+
+                pos = pos + buffer;
+
+                // outline
+                if (outline)
+                {
+                    for (int i = 1; i < thickness + 1; i++)
+                    {
+                        drawList.AddText(new Vector2(pos.X - i, pos.Y + i), outlineColor, text);
+                        drawList.AddText(new Vector2(pos.X, pos.Y + i), outlineColor, text);
+                        drawList.AddText(new Vector2(pos.X + i, pos.Y + i), outlineColor, text);
+                        drawList.AddText(new Vector2(pos.X - i, pos.Y), outlineColor, text);
+                        drawList.AddText(new Vector2(pos.X + i, pos.Y), outlineColor, text);
+                        drawList.AddText(new Vector2(pos.X - i, pos.Y - i), outlineColor, text);
+                        drawList.AddText(new Vector2(pos.X, pos.Y - i), outlineColor, text);
+                        drawList.AddText(new Vector2(pos.X + i, pos.Y - i), outlineColor, text);
+                    }
+                }
+
+                // text
+                drawList.AddText(pos, color, text);
+            }
+        }
+
         public static void DrawSegmentedLineHorizontal(
             ImDrawListPtr drawList,
             Vector2 start,

@@ -94,7 +94,7 @@ namespace XIVAuras.Config
                     ImGui.Combo("Use data from Trigger", ref this.DataTrigger, dataTriggerOptions, dataTriggerOptions.Length);
                 }
 
-                ImGui.Text("Trigger List");
+                ImGui.TextUnformatted("Trigger List");
                 ImGuiTableFlags tableFlags =
                     ImGuiTableFlags.RowBg |
                     ImGuiTableFlags.Borders |
@@ -145,7 +145,7 @@ namespace XIVAuras.Config
                     }
                 }
 
-                ImGui.Text($"Edit Trigger {_selectedIndex + 1}");
+                ImGui.TextUnformatted($"Edit Trigger {_selectedIndex + 1}");
                 if (ImGui.BeginChild("##TriggerEdit", new Vector2(size.X - padX * 2, size.Y - ImGui.GetCursorPosY() - padY * 2), true))
                 {
                     TriggerOptions selectedTrigger = this.TriggerOptions[_selectedIndex];
@@ -188,7 +188,7 @@ namespace XIVAuras.Config
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + (i == 0 ? 3f : 1f));
                 if (i == 0)
                 {
-                    ImGui.Text("IF");
+                    ImGui.TextUnformatted("IF");
                 }
                 else
                 {
@@ -201,13 +201,13 @@ namespace XIVAuras.Config
             if (ImGui.TableSetColumnIndex(1))
             {
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + (i == 0 ? 3f : 0f));
-                ImGui.Text($"Trigger {i + 1}");
+                ImGui.TextUnformatted($"Trigger {i + 1}");
             }
 
             if (ImGui.TableSetColumnIndex(2))
             {
                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + (i == 0 ? 3f : 0f));
-                ImGui.Text($"{trigger.Type}");
+                ImGui.TextUnformatted($"{trigger.Type}");
             }
 
             if (ImGui.TableSetColumnIndex(3))

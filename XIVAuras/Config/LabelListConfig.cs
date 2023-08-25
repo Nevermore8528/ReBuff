@@ -96,7 +96,7 @@ namespace XIVAuras.Config
                     if (ImGui.TableSetColumnIndex(0))
                     {
                         ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                        ImGui.Text(label.Name);
+                        ImGui.TextUnformatted(label.Name);
                     }
 
                     if (ImGui.TableSetColumnIndex(1))

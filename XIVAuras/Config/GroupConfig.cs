@@ -34,7 +34,7 @@ namespace XIVAuras.Config
                 ImGui.DragFloat2("Group Position", ref this.Position);
 
                 ImGui.NewLine();
-                ImGui.Text("Resize Icons");
+                ImGui.TextUnformatted("Resize Icons");
                 ImGui.DragFloat2("Icon Size##Size", ref _iconSize, 1, 0, _screenSize.Y);
                 ImGui.Checkbox("Recursive##Size", ref _recusiveResize);
                 if (ImGui.IsItemHovered())
@@ -61,7 +61,7 @@ namespace XIVAuras.Config
                 }
 
                 ImGui.NewLine();
-                ImGui.Text("Sort Icons");
+                ImGui.TextUnformatted("Sort Icons");
                 ImGui.DragFloat2("Spacing##Sort", ref _iconPos, 1, -100, 100);
                 ImGui.Checkbox("Recursive##Sort", ref _recusiveSort);
                 if (ImGui.IsItemHovered())
@@ -103,7 +103,7 @@ namespace XIVAuras.Config
                 if (parent is AuraGroup group)
                 {
                     ImGui.NewLine();
-                    ImGui.Text("Scale Resolution (BACK UP YOUR CONFIG FIRST!)");
+                    ImGui.TextUnformatted("Scale Resolution (BACK UP YOUR CONFIG FIRST!)");
                     ImGui.DragFloat("X Multiplier", ref _mX, 0.01f, 0.01f, 100f);
                     ImGui.DragFloat("Y Multiplier", ref _mY, 0.01f, 0.01f, 100f);
                     ImGui.Checkbox("Scale positions only", ref this._positionOnly);

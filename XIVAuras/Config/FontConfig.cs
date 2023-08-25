@@ -55,7 +55,7 @@ namespace XIVAuras.Config
                 {
                     float cursorY = ImGui.GetCursorPosY();
                     ImGui.SetCursorPosY(cursorY + 2f);
-                    ImGui.Text("Copy Font Folder Path to Clipboard: ");
+                    ImGui.TextUnformatted("Copy Font Folder Path to Clipboard: ");
                     ImGui.SameLine();
 
                     Vector2 buttonSize = new Vector2(40, 0);
@@ -76,7 +76,7 @@ namespace XIVAuras.Config
                     ImGui.Checkbox("Support Korean", ref _korean);
 
                     DrawHelpers.DrawSpacing(1);
-                    ImGui.Text("Font List");
+                    ImGui.TextUnformatted("Font List");
 
                     ImGuiTableFlags tableFlags =
                         ImGuiTableFlags.RowBg |
@@ -108,25 +108,25 @@ namespace XIVAuras.Config
                             if (ImGui.TableSetColumnIndex(0))
                             {
                                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                                ImGui.Text(key);
+                                ImGui.TextUnformatted(key);
                             }
 
                             if (ImGui.TableSetColumnIndex(1))
                             {
                                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                                ImGui.Text(font.Size.ToString());
+                                ImGui.TextUnformatted(font.Size.ToString());
                             }
 
                             if (ImGui.TableSetColumnIndex(2))
                             {
                                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                                ImGui.Text(font.Chinese ? "Yes" : "No");
+                                ImGui.TextUnformatted(font.Chinese ? "Yes" : "No");
                             }
 
                             if (ImGui.TableSetColumnIndex(3))
                             {
                                 ImGui.SetCursorPosY(ImGui.GetCursorPosY() + 3f);
-                                ImGui.Text(font.Korean ? "Yes" : "No");
+                                ImGui.TextUnformatted(font.Korean ? "Yes" : "No");
                             }
 
                             if (ImGui.TableSetColumnIndex(4))
