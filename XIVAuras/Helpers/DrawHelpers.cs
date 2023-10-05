@@ -1,9 +1,9 @@
-﻿using System;
-using System.Numerics;
-using Dalamud.Interface;
+﻿using Dalamud.Interface;
+using Dalamud.Interface.Internal;
 using Dalamud.Interface.Internal.Notifications;
 using ImGuiNET;
-using ImGuiScene;
+using System;
+using System.Numerics;
 using XIVAuras.Config;
 
 namespace XIVAuras.Helpers
@@ -76,7 +76,7 @@ namespace XIVAuras.Helpers
             float opacity,
             ImDrawListPtr drawList)
         {
-            TextureWrap? tex = Singletons.Get<TexturesCache>().GetTextureFromIconId(iconId, (uint)stackCount, true, desaturate, opacity);
+            IDalamudTextureWrap? tex = Singletons.Get<TexturesCache>().GetTextureFromIconId(iconId, (uint)stackCount, true, desaturate, opacity);
 
             if (tex is null)
             {
@@ -88,7 +88,7 @@ namespace XIVAuras.Helpers
             drawList.AddImage(tex.ImGuiHandle, position, position + size, uv0, uv1);
         }
 
-        public static (Vector2, Vector2) GetTexCoordinates(TextureWrap texture, Vector2 size, bool cropIcon = true)
+        public static (Vector2, Vector2) GetTexCoordinates(IDalamudTextureWrap texture, Vector2 size, bool cropIcon = true)
         {
             if (texture == null)
             {
@@ -241,7 +241,7 @@ namespace XIVAuras.Helpers
                 // Tooltip Background
                 if (showBG)
                 {
-                    drawList.AddRectFilled(pos - buffer, pos + textsize + buffer*3, BGColor);
+                    drawList.AddRectFilled(pos - buffer, pos + textsize + buffer * 3, BGColor);
                 }
 
                 pos = pos + buffer;
@@ -286,7 +286,7 @@ namespace XIVAuras.Helpers
             drawList.AddRectFilled(start, start + first, colors[1]);
             start = start.AddX(first.X);
 
-            for (int i = 0; i < segments - 1; i ++)
+            for (int i = 0; i < segments - 1; i++)
             {
                 drawList.AddRectFilled(start, start + interval, colors[i % colors.Length]);
                 start = start.AddX(segWidth);
@@ -294,7 +294,7 @@ namespace XIVAuras.Helpers
 
             drawList.AddRectFilled(start, start + last, colors[1]);
         }
-        
+
         public static void DrawSegmentedLineVertical(
             ImDrawListPtr drawList,
             Vector2 start,
@@ -314,7 +314,7 @@ namespace XIVAuras.Helpers
             drawList.AddRectFilled(start, start + first, colors[1]);
             start = start.AddY(first.Y);
 
-            for (int i = 0; i < segments - 1; i ++)
+            for (int i = 0; i < segments - 1; i++)
             {
                 drawList.AddRectFilled(start, start + interval, colors[i % colors.Length]);
                 start = start.AddY(segHeight);

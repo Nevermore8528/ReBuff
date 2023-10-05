@@ -1,15 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Dalamud.Data;
-using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects;
 using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
 using Lumina.Excel;
-
-using LuminaStatus = Lumina.Excel.GeneratedSheets.Status;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using DalamudStatus = Dalamud.Game.ClientState.Statuses.Status;
+using LuminaStatus = Lumina.Excel.GeneratedSheets.Status;
 
 namespace XIVAuras.Helpers
 {
@@ -26,7 +24,7 @@ namespace XIVAuras.Helpers
                 _statusMap.Add(source, new Dictionary<uint, List<DalamudStatus>>(30));
             }
         }
-        
+
         public List<DalamudStatus> GetStatusList(TriggerSource source, uint statusId)
         {
             var dict = _statusMap[source];
@@ -45,7 +43,7 @@ namespace XIVAuras.Helpers
                 dict.Clear();
             }
 
-            PlayerCharacter? player = Singletons.Get<ClientState>().LocalPlayer;
+            PlayerCharacter? player = Singletons.Get<IClientState>().LocalPlayer;
             if (player is null)
             {
                 return;
@@ -58,7 +56,7 @@ namespace XIVAuras.Helpers
                     TriggerSource.Player => player,
                     TriggerSource.Target => Utils.FindTarget(),
                     TriggerSource.TargetOfTarget => Utils.FindTargetOfTarget(),
-                    TriggerSource.FocusTarget => Singletons.Get<TargetManager>().FocusTarget,
+                    TriggerSource.FocusTarget => Singletons.Get<ITargetManager>().FocusTarget,
                     _ => null
                 };
 
@@ -82,7 +80,7 @@ namespace XIVAuras.Helpers
 
         public static List<TriggerData> FindStatusEntries(string input)
         {
-            ExcelSheet<LuminaStatus>? sheet = Singletons.Get<DataManager>().GetExcelSheet<LuminaStatus>();
+            ExcelSheet<LuminaStatus>? sheet = Singletons.Get<IDataManager>().GetExcelSheet<LuminaStatus>();
 
             if (!string.IsNullOrEmpty(input) && sheet is not null)
             {

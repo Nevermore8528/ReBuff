@@ -1,35 +1,35 @@
-﻿using System;
+﻿using Dalamud.Interface;
+using Dalamud.Interface.Internal;
+using Dalamud.Logging;
+using Dalamud.Plugin;
+using Dalamud.Plugin.Ipc;
+using Dalamud.Plugin.Services;
+using Dalamud.Utility;
+using Lumina.Data.Files;
+using Lumina.Data.Parsing.Tex;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using Dalamud.Data;
-using Dalamud.Interface;
-using Dalamud.Logging;
-using Dalamud.Plugin;
-using Dalamud.Plugin.Ipc;
-using Dalamud.Utility;
-using ImGuiScene;
-using Lumina.Data.Files;
-using Lumina.Data.Parsing.Tex;
 using static Lumina.Data.Files.TexFile;
 
 namespace XIVAuras.Helpers
 {
     public class TexturesCache : IPluginDisposable
     {
-        private Dictionary<string, Tuple<TextureWrap, float>> _textureCache;
+        private Dictionary<string, Tuple<IDalamudTextureWrap, float>> _textureCache;
         private ICallGateSubscriber<string, string> _penumbraPathResolver;
         private UiBuilder _uiBuilder;
 
         public TexturesCache(DalamudPluginInterface pluginInterface)
         {
-            _textureCache = new Dictionary<string, Tuple<TextureWrap, float>>();
+            _textureCache = new Dictionary<string, Tuple<IDalamudTextureWrap, float>>();
             _penumbraPathResolver = pluginInterface.GetIpcSubscriber<string, string>("Penumbra.ResolveDefaultPath");
             _uiBuilder = pluginInterface.UiBuilder;
         }
 
-        public TextureWrap? GetTextureFromIconId(
+        public IDalamudTextureWrap? GetTextureFromIconId(
             uint iconId,
             uint stackCount = 0,
             bool hdIcon = true,
@@ -48,19 +48,19 @@ namespace XIVAuras.Helpers
                 _textureCache.Remove(key);
             }
 
-            TextureWrap? newTexture = this.LoadTexture(iconId + stackCount, hdIcon, greyScale, opacity);
+            IDalamudTextureWrap? newTexture = this.LoadTexture(iconId + stackCount, hdIcon, greyScale, opacity);
             if (newTexture == null)
             {
                 return null;
             }
 
-            _textureCache.Add(key, new Tuple<TextureWrap, float>(newTexture, opacity));
+            _textureCache.Add(key, new Tuple<IDalamudTextureWrap, float>(newTexture, opacity));
             return newTexture;
         }
 
-        private TextureWrap? LoadTexture(uint id, bool hdIcon, bool greyScale, float opacity = 1f)
+        private IDalamudTextureWrap? LoadTexture(uint id, bool hdIcon, bool greyScale, float opacity = 1f)
         {
-            TextureWrap? textureWrap = null;
+            IDalamudTextureWrap? textureWrap = null;
             string path = $"ui/icon/{id / 1000 * 1000:000000}/{id:000000}{(hdIcon ? "_hr1" : string.Empty)}.tex";
 
             try
@@ -78,7 +78,7 @@ namespace XIVAuras.Helpers
 
             try
             {
-                TexFile? iconFile = Singletons.Get<DataManager>().GetFile<TexFile>(path);
+                TexFile? iconFile = Singletons.Get<IDataManager>().GetFile<TexFile>(path);
                 if (iconFile is null)
                 {
                     return null;
@@ -94,8 +94,8 @@ namespace XIVAuras.Helpers
             return textureWrap;
         }
 
-        private TextureWrap? LoadPenumbraTexture(string path)
-        {            
+        private IDalamudTextureWrap? LoadPenumbraTexture(string path)
+        {
             try
             {
                 var fileStream = new FileStream(path, FileMode.Open);
@@ -121,10 +121,10 @@ namespace XIVAuras.Helpers
             {
                 PluginLog.Error($"Error loading texture: {path} {ex.ToString()}");
             }
-            
+
             return null;
         }
-        
+
         private static byte[] GetRgbaImageData(byte[] imageData)
         {
             var dst = new byte[imageData.Length];
@@ -155,7 +155,7 @@ namespace XIVAuras.Helpers
 
             return false;
         }
-        
+
         private static void Decompress(SquishOptions squishOptions, byte[] src, byte[] dst, int width, int height)
         {
             var decompressed = Squish.DecompressImage(src, width, height, squishOptions);
@@ -229,8 +229,8 @@ namespace XIVAuras.Helpers
                 _textureCache.Clear();
             }
         }
-        
-        private static TextureWrap GetTextureWrap(TexFile tex, bool greyScale, float opacity)
+
+        private static IDalamudTextureWrap GetTextureWrap(TexFile tex, bool greyScale, float opacity)
         {
             UiBuilder uiBuilder = Singletons.Get<UiBuilder>();
             byte[] bytes = tex.GetRgbaImageData();
@@ -248,7 +248,7 @@ namespace XIVAuras.Helpers
             {
                 return;
             }
-            
+
             for (int i = 0; i < bytes.Length; i += 4)
             {
                 if (greyScale)
@@ -257,7 +257,7 @@ namespace XIVAuras.Helpers
                     int g = bytes[i + 1] >> 1;
                     int b = bytes[i + 2] >> 3;
                     byte lum = (byte)(r + g + b);
-                    
+
                     bytes[i] = lum;
                     bytes[i + 1] = lum;
                     bytes[i + 2] = lum;

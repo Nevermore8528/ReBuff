@@ -50,6 +50,14 @@ namespace XIVAuras.Helpers
             }
         }
 
+        public static void Register<T>(object newSingleton)
+        {
+            if (!ActiveInstances.TryAdd(typeof(T), newSingleton))
+            {
+                throw new Exception($"Failed to register new singleton for type {newSingleton.GetType()}");
+            }
+        }
+
         public static void Dispose()
         {
             foreach (object singleton in ActiveInstances.Values)

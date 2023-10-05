@@ -1,10 +1,10 @@
+using FFXIVClientStructs.FFXIV.Client.UI;
+using FFXIVClientStructs.FFXIV.Component.GUI;
+using ImGuiNET;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using FFXIVClientStructs.FFXIV.Client.UI;
-using FFXIVClientStructs.FFXIV.Component.GUI;
-using ImGuiNET;
 
 namespace XIVAuras.Helpers
 {
@@ -152,7 +152,7 @@ namespace XIVAuras.Helpers
             AtkUnitList* loadedUnitsList = &manager->AtkUnitManager.AllLoadedUnitsList;
             if (loadedUnitsList == null) { return; }
 
-            AtkUnitBase** addonList = &loadedUnitsList->AtkUnitEntries;
+            AtkUnitBase** addonList = (AtkUnitBase**)loadedUnitsList->Entries;
             if (addonList == null) { return; }
 
             for (var i = 0; i < loadedUnitsList->Count; i++)

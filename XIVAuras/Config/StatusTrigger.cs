@@ -1,13 +1,13 @@
+using Dalamud.Game.ClientState.Objects;
+using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
+using ImGuiNET;
 using System;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using ImGuiNET;
 using XIVAuras.Helpers;
 
 namespace XIVAuras.Config
@@ -16,7 +16,7 @@ namespace XIVAuras.Config
     {
         [JsonIgnore] private static readonly string[] _sourceOptions = Enum.GetNames<TriggerSource>();
         [JsonIgnore] private static readonly string[] _triggerConditions = new string[] { "Status Active", "Status Not Active" };
-        
+
         [JsonIgnore] private string _triggerNameInput = string.Empty;
         [JsonIgnore] private string _triggerConditionValueInput = string.Empty;
         [JsonIgnore] private string _durationValueInput = string.Empty;
@@ -47,7 +47,7 @@ namespace XIVAuras.Config
             {
                 return false;
             }
-            
+
             if (preview)
             {
                 data.Value = 10;
@@ -57,30 +57,30 @@ namespace XIVAuras.Config
                 return true;
             }
 
-            PlayerCharacter? player = Singletons.Get<ClientState>().LocalPlayer;
+            PlayerCharacter? player = Singletons.Get<IClientState>().LocalPlayer;
             if (player is null)
             {
                 return false;
             }
-            
+
             GameObject? actor = this.Source switch
             {
                 TriggerSource.Player => player,
                 TriggerSource.Target => Utils.FindTarget(),
                 TriggerSource.TargetOfTarget => Utils.FindTargetOfTarget(),
-                TriggerSource.FocusTarget => Singletons.Get<TargetManager>().FocusTarget,
+                TriggerSource.FocusTarget => Singletons.Get<ITargetManager>().FocusTarget,
                 _ => null
             };
             if (actor is null)
             {
                 return false;
             }
-            
+
 
             bool active = false;
             data.Icon = TriggerData.First().Icon;
             StatusHelpers helper = Singletons.Get<StatusHelpers>();
-            foreach(TriggerData trigger in this.TriggerData)
+            foreach (TriggerData trigger in this.TriggerData)
             {
                 var statusList = helper.GetStatusList(this.Source, trigger.Id);
                 foreach (var status in statusList)
@@ -199,12 +199,12 @@ namespace XIVAuras.Config
 
                         _stackCountValueInput = this.StackCountValue.ToString();
                     }
-                    
+
                     ImGui.PopItemWidth();
                 }
             }
         }
-        
+
         private void AddTriggerData(TriggerData triggerData)
         {
             this.TriggerName = triggerData.Name.ToString();
