@@ -40,4 +40,6 @@ Known issues:
 - AutoSort function added to continually sort auras in a group as they become visible.
 
 # To Do: 
-	Validate what data can be obtained safely from party members
+	Validate what data can be obtained safely from party members	Validate what data can be obtained safely from party members
+	Add more static auras options
+	Add job guage data
