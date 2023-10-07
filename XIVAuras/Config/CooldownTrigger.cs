@@ -1,10 +1,10 @@
+using Dalamud.Plugin.Services;
+using ImGuiNET;
 using System;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using Dalamud.Game.ClientState;
-using ImGuiNET;
 using XIVAuras.Helpers;
 
 namespace XIVAuras.Config
@@ -16,7 +16,7 @@ namespace XIVAuras.Config
         [JsonIgnore] private static readonly string[] _rangeOptions = new[] { "In Range", "Not in Range" };
         [JsonIgnore] private static readonly string[] _losOptions = new[] { "In LoS", "Not in LoS" };
         [JsonIgnore] private static readonly string[] _combatTypeOptions = new[] { "PvE", "PvP" };
-        
+
         [JsonIgnore] private string _triggerNameInput = string.Empty;
         [JsonIgnore] private string _cooldownValueInput = string.Empty;
         [JsonIgnore] private string _chargeCountValueInput = string.Empty;
@@ -64,7 +64,7 @@ namespace XIVAuras.Config
                 data.Icon = this.TriggerData.FirstOrDefault()?.Icon ?? 0;
                 return true;
             }
-            
+
             TriggerData? actionTrigger = this.TriggerData.FirstOrDefault(t => t.CombatType == this.CombatType);
             if (actionTrigger is null)
             {
@@ -83,7 +83,7 @@ namespace XIVAuras.Config
                 ? recastInfo.RecastTime / recastInfo.MaxCharges
                 : recastInfo.RecastTime;
 
-            float cooldown = chargeTime != 0 
+            float cooldown = chargeTime != 0
                 ? Math.Abs(recastInfo.RecastTime - recastInfo.RecastTimeElapsed) % chargeTime
                 : 0;
 
@@ -103,12 +103,12 @@ namespace XIVAuras.Config
 
             if (this.RangeCheck)
             {
-                inRange = helper.GetActionInRange(actionId, Singletons.Get<ClientState>().LocalPlayer, Utils.FindTarget());
+                inRange = helper.GetActionInRange(actionId, Singletons.Get<IClientState>().LocalPlayer, Utils.FindTarget());
             }
 
             if (this.LosCheck)
             {
-                inLos = helper.IsTargetInLos(Singletons.Get<ClientState>().LocalPlayer, Utils.FindTarget());
+                inLos = helper.IsTargetInLos(Singletons.Get<IClientState>().LocalPlayer, Utils.FindTarget());
             }
 
             if (this.DutyAction)
@@ -319,7 +319,7 @@ namespace XIVAuras.Config
             this.TriggerName = string.Empty;
             this._triggerNameInput = string.Empty;
         }
-        
+
         private void AddTriggerData(TriggerData triggerData)
         {
             this.TriggerName = triggerData.Name.ToString();

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Numerics;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.JobGauge;
-using Dalamud.Game.Command;
-using Dalamud.Interface;
+﻿using Dalamud.Game.Command;
+using Dalamud.Interface.Utility;
 using Dalamud.Interface.Windowing;
-using Dalamud.IoC;
 using Dalamud.Plugin;
+using Dalamud.Plugin.Services;
 using ImGuiNET;
+using System;
+using System.Numerics;
 using XIVAuras.Auras;
 using XIVAuras.Config;
 using XIVAuras.Helpers;
@@ -17,22 +15,22 @@ namespace XIVAuras
 {
     public class PluginManager : IPluginDisposable
     {
-        private ClientState ClientState { get; init; }
+        private IClientState ClientState { get; init; }
 
         private DalamudPluginInterface PluginInterface { get; init; }
 
-        private CommandManager CommandManager { get; init; }
+        private ICommandManager CommandManager { get; init; }
 
         private WindowSystem WindowSystem { get; init; }
 
         private ConfigWindow ConfigRoot { get; init; }
 
         private XIVAurasConfig Config { get; init; }
-        public static JobGauges JobGauges { get; private set; } = null!;
+        public static IJobGauges JobGauges { get; private set; } = null!;
 
         private readonly Vector2 _configSize = new Vector2(600, 650);
 
-        private readonly ImGuiWindowFlags _mainWindowFlags = 
+        private readonly ImGuiWindowFlags _mainWindowFlags =
             ImGuiWindowFlags.NoTitleBar |
             ImGuiWindowFlags.NoScrollbar |
             ImGuiWindowFlags.AlwaysAutoResize |
@@ -42,11 +40,11 @@ namespace XIVAuras
             ImGuiWindowFlags.NoSavedSettings;
 
         public PluginManager(
-            ClientState clientState,
-            CommandManager commandManager,
+            IClientState clientState,
+            ICommandManager commandManager,
             DalamudPluginInterface pluginInterface,
             XIVAurasConfig config,
-            JobGauges jobGauges)
+            IJobGauges jobGauges)
         {
             this.ClientState = clientState;
             this.CommandManager = commandManager;
@@ -138,11 +136,11 @@ namespace XIVAuras
             }
         }
 
-        private void OnLogout(object? sender, EventArgs? args)
+        private void OnLogout()
         {
             ConfigHelpers.SaveConfig();
         }
-        
+
         private void PluginCommand(string command, string arguments)
         {
             if (this.ConfigRoot.IsOpen)

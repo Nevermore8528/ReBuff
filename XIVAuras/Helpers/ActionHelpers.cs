@@ -1,17 +1,15 @@
-﻿using System;
+﻿using Dalamud.Game;
+using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
+using Dalamud.Utility.Signatures;
+using FFXIVClientStructs.FFXIV.Client.Game;
+using Lumina.Excel;
+using Lumina.Excel.GeneratedSheets;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using Dalamud.Data;
-using Dalamud.Game;
-using Dalamud.Game.ClientState.Objects.Types;
-using Dalamud.Utility.Signatures;
-using FFXIVClientStructs.FFXIV.Client.Game;
-using FFXIVClientStructs.Interop.Attributes;
-using Lumina.Excel;
-using Lumina.Excel.GeneratedSheets;
-
 using LuminaAction = Lumina.Excel.GeneratedSheets.Action;
 
 namespace XIVAuras.Helpers
@@ -25,8 +23,6 @@ namespace XIVAuras.Helpers
 
         public uint? GetDutyAction(ushort a)
         {
-            SignatureHelper.Initialise(this);
-
             var dutyAction = GetDutyActionId?.Invoke(a);
 
             return dutyAction;
@@ -81,11 +77,11 @@ namespace XIVAuras.Helpers
             [Job.BLU] = 11385  // Water Cannon
         };
 
-        public unsafe ActionHelpers(SigScanner scanner)
+        public unsafe ActionHelpers(ISigScanner scanner)
         {
             _actionManager = ActionManager.Instance();
             _castRay = Marshal.GetDelegateForFunctionPointer<CastRayNative>(scanner.ScanText(CastRaySig));
-            _combo = (Combo*) scanner.GetStaticAddressFromSig(ComboSig);
+            _combo = (Combo*)scanner.GetStaticAddressFromSig(ComboSig);
             _actionIdToIconId = new Dictionary<uint, ushort>();
         }
 
@@ -96,7 +92,7 @@ namespace XIVAuras.Helpers
                 return _actionIdToIconId[actionId];
             }
 
-            ushort icon = Singletons.Get<DataManager>().GetExcelSheet<LuminaAction>()?.GetRow(actionId)?.Icon ?? 0;
+            ushort icon = Singletons.Get<IDataManager>().GetExcelSheet<LuminaAction>()?.GetRow(actionId)?.Icon ?? 0;
             if (icon != 0)
             {
                 _actionIdToIconId.Add(actionId, icon);
@@ -113,13 +109,13 @@ namespace XIVAuras.Helpers
         public unsafe void GetAdjustedRecastInfo(uint actionId, out RecastInfo recastInfo)
         {
             recastInfo = default;
-            int recastGroup = _actionManager->GetRecastGroup((int)ActionType.Spell, actionId);
+            int recastGroup = _actionManager->GetRecastGroup((int)ActionType.Action, actionId);
             RecastDetail* recastDetail = _actionManager->GetRecastGroupDetail(recastGroup);
             if (recastDetail == null)
             {
                 return;
             }
-            
+
             recastInfo.RecastTime = recastDetail->Total;
             recastInfo.RecastTimeElapsed = recastDetail->Elapsed;
             recastInfo.MaxCharges = ActionManager.GetMaxCharges(actionId, 90);
@@ -154,7 +150,7 @@ namespace XIVAuras.Helpers
             return;
         }
 
-        public unsafe bool CanUseAction(uint actionId, ActionType type = ActionType.Spell, long targetId = 0xE000_0000)
+        public unsafe bool CanUseAction(uint actionId, ActionType type = ActionType.Action, ulong targetId = 0xE000_0000)
         {
             return _actionManager->GetActionStatus(type, actionId, targetId, false, true) == 0;
         }
@@ -197,7 +193,7 @@ namespace XIVAuras.Helpers
 
         public static List<TriggerData> FindItemEntries(string input)
         {
-            ExcelSheet<Item>? sheet = Singletons.Get<DataManager>().GetExcelSheet<Item>();
+            ExcelSheet<Item>? sheet = Singletons.Get<IDataManager>().GetExcelSheet<Item>();
 
             if (!string.IsNullOrEmpty(input) && sheet is not null)
             {
@@ -233,7 +229,7 @@ namespace XIVAuras.Helpers
         public static List<TriggerData> FindActionEntries(string input)
         {
             List<TriggerData> actionList = new List<TriggerData>();
-            
+
             if (!string.IsNullOrEmpty(input))
             {
                 actionList.AddRange(FindEntriesFromActionSheet(input));
@@ -248,13 +244,13 @@ namespace XIVAuras.Helpers
         public static List<TriggerData> FindEntriesFromActionSheet(string input)
         {
             List<TriggerData> actionList = new List<TriggerData>();
-            ExcelSheet<LuminaAction>? actionSheet = Singletons.Get<DataManager>().GetExcelSheet<LuminaAction>();
+            ExcelSheet<LuminaAction>? actionSheet = Singletons.Get<IDataManager>().GetExcelSheet<LuminaAction>();
 
             if (actionSheet is null)
             {
                 return actionList;
             }
-            
+
             // Add by id
             if (uint.TryParse(input, out uint value))
             {
@@ -271,7 +267,7 @@ namespace XIVAuras.Helpers
             // Add by name
             if (!actionList.Any())
             {
-                foreach(LuminaAction action in actionSheet)
+                foreach (LuminaAction action in actionSheet)
                 {
                     if (input.ToLower().Equals(action.Name.ToString().ToLower()) && (action.IsPlayerAction || action.IsRoleAction))
                     {
@@ -279,14 +275,14 @@ namespace XIVAuras.Helpers
                     }
                 }
             }
-            
+
             return actionList;
         }
 
         public static List<TriggerData> FindEntriesFromActionIndirectionSheet(string input)
         {
             List<TriggerData> actionList = new List<TriggerData>();
-            ExcelSheet<ActionIndirection>? actionIndirectionSheet = Singletons.Get<DataManager>().GetExcelSheet<ActionIndirection>();
+            ExcelSheet<ActionIndirection>? actionIndirectionSheet = Singletons.Get<IDataManager>().GetExcelSheet<ActionIndirection>();
 
             if (actionIndirectionSheet is null)
             {
@@ -306,7 +302,7 @@ namespace XIVAuras.Helpers
                     }
                 }
             }
-            
+
             // Add by name
             if (!actionList.Any())
             {
@@ -326,7 +322,7 @@ namespace XIVAuras.Helpers
         public static List<TriggerData> FindEntriesFromGeneralActionSheet(string input)
         {
             List<TriggerData> actionList = new List<TriggerData>();
-            ExcelSheet<GeneralAction>? generalSheet = Singletons.Get<DataManager>().GetExcelSheet<GeneralAction>();
+            ExcelSheet<GeneralAction>? generalSheet = Singletons.Get<IDataManager>().GetExcelSheet<GeneralAction>();
 
             if (generalSheet is null)
             {
@@ -352,7 +348,7 @@ namespace XIVAuras.Helpers
         public static List<TriggerData> FindEntriesFromLostActionSheet(string input)
         {
             List<TriggerData> actionList = new List<TriggerData>();
-            ExcelSheet<MYCTemporaryItem>? lostSheet = Singletons.Get<DataManager>().GetExcelSheet<MYCTemporaryItem>();
+            ExcelSheet<MYCTemporaryItem>? lostSheet = Singletons.Get<IDataManager>().GetExcelSheet<MYCTemporaryItem>();
 
             if (lostSheet is null)
             {
@@ -391,9 +387,9 @@ namespace XIVAuras.Helpers
             {
                 return Array.Empty<uint>();
             }
-            
+
             List<uint> comboIds = new List<uint>() { baseComboId };
-            ExcelSheet<ActionIndirection>? actionIndirectionSheet = Singletons.Get<DataManager>().GetExcelSheet<ActionIndirection>();
+            ExcelSheet<ActionIndirection>? actionIndirectionSheet = Singletons.Get<IDataManager>().GetExcelSheet<ActionIndirection>();
 
             if (actionIndirectionSheet is null)
             {
@@ -413,7 +409,7 @@ namespace XIVAuras.Helpers
             return comboIds.ToArray();
         }
 
-        public static unsafe void GetGCDInfo(out RecastInfo recastInfo, ActionType actionType = ActionType.Spell)
+        public static unsafe void GetGCDInfo(out RecastInfo recastInfo, ActionType actionType = ActionType.Action)
         {
             if (!_jobActionIDs.TryGetValue(CharacterState.GetCharacterJob(), out uint actionId))
             {

@@ -1,24 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using Dalamud.Data;
-using Dalamud.Game;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Buddy;
-using Dalamud.Game.ClientState.Conditions;
-using Dalamud.Game.ClientState.JobGauge;
+﻿using Dalamud.Game;
 using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.ClientState.Party;
-using Dalamud.Game.Command;
-using Dalamud.Game.Gui;
 using Dalamud.Interface;
+using Dalamud.Interface.Internal;
 using Dalamud.Logging;
 using Dalamud.Plugin;
-using ImGuiScene;
+using Dalamud.Plugin.Services;
+using System;
+using System.IO;
+using System.Reflection;
 using XIVAuras.Config;
 using XIVAuras.Helpers;
-
-using SigScanner = Dalamud.Game.SigScanner;
 
 namespace XIVAuras
 {
@@ -32,26 +23,26 @@ namespace XIVAuras
 
         public static string ConfigFilePath { get; private set; } = "";
 
-        public static TextureWrap? IconTexture { get; private set; } = null;
+        public static IDalamudTextureWrap? IconTexture { get; private set; } = null;
 
         public static string Changelog { get; private set; } = string.Empty;
 
         public string Name => "ReBuff";
 
         public Plugin(
-            BuddyList buddyList,
-            ClientState clientState,
-            CommandManager commandManager,
-            Condition condition,
+            IBuddyList buddyList,
+            IClientState clientState,
+            ICommandManager commandManager,
+            ICondition condition,
             DalamudPluginInterface pluginInterface,
-            DataManager dataManager,
-            Framework framework,
-            GameGui gameGui,
-            JobGauges jobGauges,
-            ObjectTable objectTable,
-            PartyList partyList,
-            SigScanner sigScanner,
-            TargetManager targetManager
+            IDataManager dataManager,
+            IFramework framework,
+            IGameGui gameGui,
+            IJobGauges jobGauges,
+            IObjectTable objectTable,
+            IPartyList partyList,
+            ISigScanner sigScanner,
+            ITargetManager targetManager
         )
         {
             Plugin.Version = Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? Plugin.Version;
@@ -59,19 +50,19 @@ namespace XIVAuras
             Plugin.ConfigFilePath = Path.Combine(pluginInterface.GetPluginConfigDirectory(), Plugin.ConfigFileName);
 
             // Register Dalamud APIs
-            Singletons.Register(buddyList);
-            Singletons.Register(clientState);
-            Singletons.Register(commandManager);
-            Singletons.Register(condition);
-            Singletons.Register(pluginInterface);
-            Singletons.Register(dataManager);
-            Singletons.Register(framework);
-            Singletons.Register(gameGui);
-            Singletons.Register(jobGauges);
-            Singletons.Register(objectTable);
-            Singletons.Register(partyList);
-            Singletons.Register(sigScanner);
-            Singletons.Register(targetManager);
+            Singletons.Register<IBuddyList>(buddyList);
+            Singletons.Register<IClientState>(clientState);
+            Singletons.Register<ICommandManager>(commandManager);
+            Singletons.Register<ICondition>(condition);
+            Singletons.Register<DalamudPluginInterface>(pluginInterface);
+            Singletons.Register<IDataManager>(dataManager);
+            Singletons.Register<IFramework>(framework);
+            Singletons.Register<IGameGui>(gameGui);
+            Singletons.Register<IJobGauges>(jobGauges);
+            Singletons.Register<IObjectTable>(objectTable);
+            Singletons.Register<IPartyList>(partyList);
+            Singletons.Register<ISigScanner>(sigScanner);
+            Singletons.Register<ITargetManager>(targetManager);
             Singletons.Register(pluginInterface.UiBuilder);
             Singletons.Register(new TexturesCache(pluginInterface));
             Singletons.Register(new ActionHelpers(sigScanner));
@@ -96,7 +87,7 @@ namespace XIVAuras
             Singletons.Register(new PluginManager(clientState, commandManager, pluginInterface, config, jobGauges));
         }
 
-        private static TextureWrap? LoadIconTexture(UiBuilder uiBuilder)
+        private static IDalamudTextureWrap? LoadIconTexture(UiBuilder uiBuilder)
         {
             string? pluginPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             if (string.IsNullOrEmpty(pluginPath))
@@ -110,7 +101,7 @@ namespace XIVAuras
                 return null;
             }
 
-            TextureWrap? texture = null;
+            IDalamudTextureWrap? texture = null;
             try
             {
                 texture = uiBuilder.LoadImage(iconPath);

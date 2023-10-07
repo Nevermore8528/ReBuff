@@ -1,17 +1,13 @@
+using Dalamud.Game.ClientState.JobGauge.Enums;
+using Dalamud.Game.ClientState.Objects;
+using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Plugin.Services;
+using ImGuiNET;
 using System;
 using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Text.Json.Serialization;
-using Dalamud.Game.ClientState;
-using Dalamud.Game.ClientState.Buddy;
-using Dalamud.Game.ClientState.JobGauge.Enums;
-using Dalamud.Game.ClientState.JobGauge.Types;
-using Dalamud.Game.ClientState.Objects;
-using Dalamud.Game.ClientState.Objects.SubKinds;
-using Dalamud.Game.ClientState.Objects.Types;
-using ImGuiNET;
 using XIVAuras.Helpers;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using CharacterStruct = FFXIVClientStructs.FFXIV.Client.Game.Character.Character;
 
 namespace XIVAuras.Config
@@ -55,7 +51,7 @@ namespace XIVAuras.Config
         public bool Level = false;
         public TriggerDataOp LevelOp = TriggerDataOp.GreaterThan;
         public float LevelValue;
-        
+
         public bool Hp = false;
         public TriggerDataOp HpOp = TriggerDataOp.GreaterThan;
         public float HpValue;
@@ -91,7 +87,7 @@ namespace XIVAuras.Config
         public override bool IsTriggered(bool preview, out DataSource data)
         {
             data = new DataSource();
-            
+
             if (preview)
             {
                 return true;
@@ -99,13 +95,13 @@ namespace XIVAuras.Config
 
             GameObject? actor = this.TriggerSource switch
             {
-                TriggerSource.Player => Singletons.Get<ClientState>().LocalPlayer,
+                TriggerSource.Player => Singletons.Get<IClientState>().LocalPlayer,
                 TriggerSource.Target => Utils.FindTarget(),
                 TriggerSource.TargetOfTarget => Utils.FindTargetOfTarget(),
-                TriggerSource.FocusTarget => Singletons.Get<TargetManager>().FocusTarget,
+                TriggerSource.FocusTarget => Singletons.Get<ITargetManager>().FocusTarget,
                 _ => null
             };
-            
+
             if (actor is not null)
             {
                 data.Name = actor.Name.ToString();
@@ -124,11 +120,11 @@ namespace XIVAuras.Config
                 data.Level = chara.Level;
                 data.Distance = chara.YalmDistanceX;
                 data.HasPet = this.TriggerSource == TriggerSource.Player &&
-                    Singletons.Get<BuddyList>().PetBuddy != null;  
+                    Singletons.Get<IBuddyList>().PetBuddy != null;
 
                 unsafe
                 {
-                    data.Job = (Job)((CharacterStruct*)chara.Address)->ClassJob;
+                    data.Job = (Job)((CharacterStruct*)chara.Address)->CharacterData.ClassJob;
                 }
             }
 
@@ -570,9 +566,9 @@ namespace XIVAuras.Config
                     case 1900:
                         this.Unit = data.LoTDTimer;
                         if (data.CurrentLevel < 78)
-                            { this.MaxUnit = 20000; }
+                        { this.MaxUnit = 20000; }
                         else
-                            { this.MaxUnit = 30000; }
+                        { this.MaxUnit = 30000; }
                         break;
                     case 1901:
                         this.Unit = 0;
@@ -721,7 +717,7 @@ namespace XIVAuras.Config
         {
             ImGui.Combo("Trigger Source", ref Unsafe.As<TriggerSource, int>(ref this.TriggerSource), _sourceOptions, _sourceOptions.Length);
             DrawHelpers.DrawSpacing(1);
-            
+
             ImGui.TextUnformatted("Trigger Conditions");
             string[] operatorOptions = TriggerOptions.OperatorOptions;
             float optionsWidth = 100 + padX;
